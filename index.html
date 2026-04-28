@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Código da Longevidade — Página de Vendas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --obsidian:    #080C10;
+    --dark-bg:     #0C1218;
+    --panel-dark:  #0F1A24;
+    --emerald-dk:  #0B3B2C;
+    --emerald:     #0E6B4A;
+    --emerald-lt:  #13A06E;
+    --gold:        #C9961A;
+    --gold-lt:     #E8B830;
+    --gold-pale:   #F5D97A;
+    --cream:       #F7F4EE;
+    --off-white:   #EDE9E1;
+    --warm-white:  #FAF8F3;
+    --text-dark:   #141210;
+    --text-mid:    #3A3530;
+    --text-light:  #7A7268;
+    --red-urgency: #C0392B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #060809;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    padding: 50px 20px;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .section-label {
+    color: #333;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+  }
+
+  /* ══════════════════════════════════════
+     FEED 1:1  —  540×540
+  ══════════════════════════════════════ */
+  .banner-feed {
+    width: 540px;
+    height: 540px;
+    display: flex;
+    border-radius: 0px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(201,150,26,0.2),
+      0 50px 120px rgba(0,0,0,0.8),
+      0 0 80px rgba(14,107,74,0.08);
+    position: relative;
+  }
+
+  /* ── Left panel ── */
+  .panel-left {
+    width: 40%;
+    background: var(--obsidian);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Diagonal stripe texture */
+  .panel-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 18px,
+      rgba(14,107,74,0.04) 18px,
+      rgba(14,107,74,0.04) 19px
+    );
+  }
+
+  /* Glowing bottom edge */
+  .panel-left::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.6;
+  }
+
+  /* Radial glow behind book */
+  .book-glow {
+    position: absolute;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(14,107,74,0.22) 0%, transparent 70%);
+    animation: pulseGlow 4s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50%       { transform: scale(1.2); opacity: 1; }
+  }
+
+  /* ── Ebook mockup ── */
+  .ebook-mockup {
+    width: 118px;
+    height: 162px;
+    border-radius: 3px 10px 10px 3px;
+    background: linear-gradient(155deg, #0E3D2C 0%, #060E18 100%);
+    position: relative;
+    z-index: 2;
+    box-shadow:
+      -5px 0 0 rgba(0,0,0,0.6),
+      10px 10px 40px rgba(0,0,0,0.7),
+      0 0 50px rgba(14,107,74,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+    animation: bookFloat 6s ease-in-out infinite;
+    overflow: hidden;
+  }
+
+  @keyframes bookFloat {
+    0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+    50%       { transform: translateY(-10px) rotate(0.5deg); }
+  }
+
+  /* Book spine */
+  .ebook-mockup::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 6px; height: 100%;
+    background: linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.3));
+    border-right: 1px solid rgba(14,107,74,0.3);
+  }
+
+  /* Gold top edge line */
+  .ebook-mockup::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-lt), transparent);
+    opacity: 0.8;
+  }
+
+  /* Shimmer sweep */
+  .book-shimmer {
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 50%; height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 4s ease-in-out infinite 2s;
+    z-index: 3;
+  }
+
+  @keyframes shimmer {
+    0%   { left: -60%; opacity: 0; }
+    20%  { opacity: 1; }
+    100% { left: 140%; opacity: 0; }
+  }
+
+  .ebook-cover {
+    padding: 14px 10px 12px 14px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ec-category {
+    font-family: 'Syne', sans-serif;
+    font-size: 5px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--emerald-lt);
+    margin-bottom: 8px;
+  }
+
+  .ec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.0;
+    color: var(--gold-lt);
+    margin-bottom: 2px;
+  }
+
+  .ec-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 400;
+    font-style: italic;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  .ec-line {
+    width: 24px; height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 6px;
+  }
+
+  .ec-tagline {
+    font-family: 'Syne', sans-serif;
+    font-size: 4.5px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .ec-seal {
+    position: absolute;
+    bottom: 12px; right: 10px;
+    width: 32px; height: 32px;
+    border: 1px solid rgba(201,150,26,0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    animation: rotateSeal 12s linear infinite;
+  }
+
+  @keyframes rotateSeal {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* ── Right panel ── */
+  .panel-right {
+    flex: 1;
+    background: var(--warm-white);
+    padding: 26px 24px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle diagonal pattern */
+  .panel-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(14,107,74,0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  /* Gold corner accent */
+  .panel-right::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 3px; height: 60px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    opacity: 0.5;
+  }
+
+  .pr-top {}
+
+  .pr-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(14,107,74,0.08);
+    border: 1px solid rgba(14,107,74,0.2);
+    color: var(--emerald);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards 0.2s;
+  }
+
+  .pr-pill::before {
+    content: '';
+    width: 5px; height: 5px;
+    background: var(--emerald-lt);
+    border-radius: 50%;
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.2; }
+  }
+
+  /* Pain hook */
+  .pain-hook {
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards 0.35s;
+    margin-bottom: 10px;
+  }
+
+  .pain-hook-pre {
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+  }
+
+  .pain-hook-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 27px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.05;
+  }
+
+  .pain-hook-main em {
+    font-style: italic;
+    color: var(--emerald);
+  }
+
+  .pain-hook-main .pain-red {
+    color: #8B1A0E;
+  }
+
+  .gold-bar {
+    width: 36px; height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-pale));
+    margin: 10px 0;
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards 0.5s;
+  }
+
+  .promise {
+    font-family: 'Syne', sans-serif;
+    font-size: 9.5px;
+    font-weight: 400;
+    color: var(--text-mid);
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards 0.6s;
+    margin-bottom: 10px;
+  }
+
+  /* Benefits */
+  .benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards 0.7s;
+  }
+
+  .benefit-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.3;
+  }
+
+  .benefit-dot {
+    width: 4px; height: 4px;
+    min-width: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  /* Authority strip */
+  .authority {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px;
+    color: var(--text-light);
+    font-weight: 400;
+    font-style: italic;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards 0.8s;
+    margin-bottom: 8px;
+  }
+
+  /* Pricing block */
+  .pricing-block {
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards 0.9s;
+  }
+
+  .price-anchor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .price-was {
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    color: var(--text-light);
+    text-decoration: line-through;
+    font-weight: 400;
+  }
+
+  .price-save {
+    background: #8B1A0E;
+    color: white;
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+
+  .price-now {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    margin-bottom: 8px;
+  }
+
+  .price-currency {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--emerald);
+  }
+
+  .price-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--emerald);
+    line-height: 1;
+  }
+
+  .price-cents {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--emerald);
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+
+  .cta-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--emerald-lt) 0%, var(--emerald) 100%);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    padding: 11px 16px;
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 6px 24px rgba(14,107,74,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+    transition: all 0.25s ease;
+    animation: ctaPulse 3s ease-in-out infinite 2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    transition: left 0.4s ease;
+  }
+  .cta-btn:hover::before { left: 100%; }
+  .cta-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(14,107,74,0.5);
+  }
+
+  @keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 6px 24px rgba(14,107,74,0.4); }
+    50%       { box-shadow: 0 6px 34px rgba(14,107,74,0.6); }
+  }
+
+  .guarantee-line {
+    margin-top: 5px;
+    font-size: 7.5px;
+    color: var(--text-light);
+    text-align: center;
+    font-weight: 400;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ══════════════════════════════════════
+     STORIES 9:16  —  304×540
+  ══════════════════════════════════════ */
+  .banner-stories {
+    width: 304px;
+    height: 540px;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(201,150,26,0.15), 0 40px 100px rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+    background: var(--obsidian);
+  }
+
+  .st-hero {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px 16px;
+  }
+
+  /* Hero background */
+  .st-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(14,107,74,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 80% 40% at 80% 80%, rgba(201,150,26,0.08) 0%, transparent 70%);
+  }
+
+  /* Grid lines */
+  .st-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(14,107,74,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,107,74,0.04) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .st-overline {
+    font-family: 'Syne', sans-serif;
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--emerald-lt);
+    position: relative;
+    z-index: 2;
+    margin-bottom: 16px;
+  }
+
+  .st-book {
+    width: 130px; height: 175px;
+    border-radius: 3px 12px 12px 3px;
+    background: linear-gradient(155deg, #0C3222 0%, #060D16 100%);
+    box-shadow:
+      -5px 0 0 rgba(0,0,0,0.6),
+      14px 14px 50px rgba(0,0,0,0.7),
+      0 0 60px rgba(14,107,74,0.25),
+      inset 0 1px 0 rgba(255,255,255,0.04);
+    animation: bookFloat 6s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    padding: 14px 10px 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .st-book::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 5px; height: 100%;
+    background: rgba(0,0,0,0.5);
+    border-right: 1px solid rgba(14,107,74,0.25);
+  }
+
+  .st-book::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold-lt), transparent);
+  }
+
+  .stb-cat {
+    font-family: 'Syne', sans-serif;
+    font-size: 5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--emerald-lt);
+  }
+
+  .stb-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--gold-lt);
+    line-height: 1.0;
+  }
+
+  .stb-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.1;
+  }
+
+  .stb-divider {
+    width: 22px; height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  .stb-modules {
+    font-family: 'Syne', sans-serif;
+    font-size: 5px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.7;
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  /* Stats row */
+  .st-stats {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+    margin-top: 20px;
+  }
+
+  .st-stat {
+    text-align: center;
+  }
+
+  .st-stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold-lt);
+    line-height: 1;
+  }
+
+  .st-stat-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 6px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .st-stat-sep {
+    width: 1px;
+    background: rgba(255,255,255,0.1);
+    align-self: stretch;
+    margin: 4px 0;
+  }
+
+  /* Stories bottom */
+  .st-bottom {
+    background: var(--warm-white);
+    padding: 18px 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+
+  .st-bottom::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.4;
+  }
+
+  .st-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.1;
+  }
+  .st-headline em { color: var(--emerald); font-style: italic; }
+
+  .st-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: 8.5px;
+    color: var(--text-mid);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  .st-price-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .st-was {
+    font-size: 9px;
+    color: var(--text-light);
+    text-decoration: line-through;
+  }
+
+  .st-now {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--emerald);
+    line-height: 1;
+  }
+
+  .st-badge-sale {
+    background: #8B1A0E;
+    color: white;
+    font-size: 7px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 2px;
+  }
+
+  .st-cta {
+    background: linear-gradient(135deg, var(--emerald-lt) 0%, var(--emerald) 100%);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    padding: 11px;
+    font-family: 'Syne', sans-serif;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(14,107,74,0.4);
+    animation: ctaPulse 3s ease-in-out infinite 2.5s;
+    transition: all 0.25s ease;
+  }
+
+  .st-guarantee {
+    font-family: 'Syne', sans-serif;
+    font-size: 7px;
+    color: var(--text-light);
+    text-align: center;
+    font-weight: 400;
+  }
+
+  /* ══════════════════════════════════════
+     HORIZONTAL — EMAIL / YT THUMB  800×200
+  ══════════════════════════════════════ */
+  .banner-wide {
+    width: 800px;
+    height: 200px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(201,150,26,0.15), 0 30px 80px rgba(0,0,0,0.6);
+    display: flex;
+    position: relative;
+  }
+
+  /* Left dark section */
+  .bw-left {
+    width: 260px;
+    background: var(--obsidian);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .bw-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 150% 120% at 50% 100%, rgba(14,107,74,0.18) 0%, transparent 70%);
+  }
+
+  .bw-left::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, var(--gold), transparent);
+    opacity: 0.35;
+  }
+
+  .bw-book {
+    width: 86px; height: 118px;
+    border-radius: 3px 8px 8px 3px;
+    background: linear-gradient(155deg, #0C3222 0%, #060D16 100%);
+    box-shadow:
+      -4px 0 0 rgba(0,0,0,0.6),
+      8px 8px 30px rgba(0,0,0,0.7),
+      0 0 40px rgba(14,107,74,0.2);
+    animation: bookFloat 6s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+    padding: 10px 8px 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 2;
+  }
+
+  .bw-book::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 4px; height: 100%;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .bw-book::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold-lt), transparent);
+  }
+
+  .bwb-cat {
+    font-family: 'Syne', sans-serif;
+    font-size: 4px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--emerald-lt);
+  }
+
+  .bwb-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold-lt);
+    line-height: 1.0;
+  }
+
+  .bwb-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 9px;
+    font-style: italic;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.2;
+  }
+
+  .bwb-line {
+    width: 18px; height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  /* Wide center */
+  .bw-center {
+    flex: 1;
+    background: var(--warm-white);
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bw-center::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(14,107,74,0.03) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
+  .bw-pretitle {
+    font-family: 'Syne', sans-serif;
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--emerald);
+  }
+
+  .bw-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.05;
+  }
+
+  .bw-headline em { font-style: italic; color: var(--emerald); }
+
+  .bw-desc {
+    font-family: 'Syne', sans-serif;
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--text-mid);
+    line-height: 1.5;
+    max-width: 260px;
+  }
+
+  /* Wide right CTA */
+  .bw-right {
+    width: 190px;
+    background: var(--obsidian);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 20px 18px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bw-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 120% 80% at 50% 50%, rgba(14,107,74,0.12) 0%, transparent 70%);
+  }
+
+  .bw-right::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.3;
+  }
+
+  .bw-price-was {
+    font-family: 'Syne', sans-serif;
+    font-size: 8px;
+    color: rgba(255,255,255,0.3);
+    text-decoration: line-through;
+    position: relative; z-index: 1;
+  }
+
+  .bw-price-now {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold-lt);
+    line-height: 1;
+    position: relative; z-index: 1;
+  }
+
+  .bw-price-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 7px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative; z-index: 1;
+  }
+
+  .bw-cta {
+    background: linear-gradient(135deg, var(--emerald-lt), var(--emerald));
+    color: white;
+    border: none;
+    border-radius: 2px;
+    padding: 10px 16px;
+    font-family: 'Syne', sans-serif;
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(14,107,74,0.4);
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    animation: ctaPulse 3s ease-in-out infinite 3s;
+    position: relative; z-index: 1;
+    width: 100%;
+    text-align: center;
+  }
+
+  .bw-guarantee {
+    font-family: 'Syne', sans-serif;
+    font-size: 6.5px;
+    color: rgba(255,255,255,0.3);
+    text-align: center;
+    line-height: 1.5;
+    position: relative; z-index: 1;
+  }
+
+</style>
+</head>
+<body>
+
+<p class="section-label">Feed Instagram — 1:1</p>
+
+<!-- ════════════════ BANNER FEED 1:1 ════════════════ -->
+<div class="banner-feed">
+
+  <!-- LEFT -->
+  <div class="panel-left">
+    <div class="book-glow"></div>
+    <div class="ebook-mockup">
+      <div class="book-shimmer"></div>
+      <div class="ebook-cover">
+        <div class="ec-category">Saúde · Longevidade</div>
+        <div class="ec-title">Código da</div>
+        <div class="ec-subtitle">Longevidade</div>
+        <div class="ec-line"></div>
+        <div class="ec-tagline">O protocolo que médicos aplicam e ninguém te contou</div>
+        <div class="ec-seal">◈</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="panel-right">
+    <div class="pr-top">
+
+      <div class="pr-pill">Ebook Digital · Acesso Imediato</div>
+
+      <div class="pain-hook">
+        <div class="pain-hook-pre">Você acorda todo dia</div>
+        <div class="pain-hook-main">
+          sem energia,<br>
+          <em>sem disposição</em><br>
+          e sem resposta.
+        </div>
+      </div>
+
+      <div class="gold-bar"></div>
+
+      <div class="promise">
+        O <strong>Código da Longevidade</strong> reúne em 7 módulos os protocolos usados por especialistas em medicina preventiva — da alimentação ao sono, da suplementação ao plano de ação de 90 dias.
+      </div>
+
+      <div class="benefits">
+        <div class="benefit-row">
+          <div class="benefit-dot"></div>
+          Causa raiz da fadiga crônica
+        </div>
+        <div class="benefit-row">
+          <div class="benefit-dot"></div>
+          Alimentação antiinflamatória prática
+        </div>
+        <div class="benefit-row">
+          <div class="benefit-dot"></div>
+          Sono reparador em 14 dias
+        </div>
+        <div class="benefit-row">
+          <div class="benefit-dot"></div>
+          Exames e suplementação inteligente
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="authority">
+        Baseado em protocolos de medicina preventiva e longevidade · +3.200 leitores
+      </div>
+
+      <div class="pricing-block">
+        <div class="price-anchor">
+          <span class="price-was">De R$ 97,00</span>
+          <span class="price-save">80% OFF</span>
+        </div>
+        <div class="price-now">
+          <span class="price-currency">R$</span>
+          <span class="price-value">19</span>
+          <span class="price-cents">,90</span>
+        </div>
+        <button class="cta-btn" onclick="window.open('https://pay.cakto.com.br/5a2axev_865748', '_blank')" style="width:100%;cursor:pointer;">QUERO MEU ACESSO AGORA →</button>
+        <div class="guarantee-line">✦ Download imediato · Garantia incondicional de 7 dias</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p class="section-label">Stories / Reels — 9:16</p>
+
+<!-- ════════════════ BANNER STORIES ════════════════ -->
+<div class="banner-stories">
+
+  <div class="st-hero">
+    <div class="st-overline">Protocolo de Longevidade</div>
+
+    <div class="st-book">
+      <div class="stb-cat">Saúde · Medicina Preventiva</div>
+      <div class="stb-title">Código da</div>
+      <div class="stb-subtitle">Longevidade</div>
+      <div class="stb-divider"></div>
+      <div class="stb-modules">
+        ✦ Causa da Fadiga Crônica<br>
+        ✦ Protocolo Antiinflamatório<br>
+        ✦ Sono Reparador em 14 dias<br>
+        ✦ Exames e Suplementação<br>
+        ✦ Plano de Ação de 90 Dias
+      </div>
+    </div>
+
+    <div class="st-stats">
+      <div class="st-stat">
+        <div class="st-stat-num">+3.2k</div>
+        <div class="st-stat-label">Leitores</div>
+      </div>
+      <div class="st-stat-sep"></div>
+      <div class="st-stat">
+        <div class="st-stat-num">7</div>
+        <div class="st-stat-label">Módulos</div>
+      </div>
+      <div class="st-stat-sep"></div>
+      <div class="st-stat">
+        <div class="st-stat-num">90</div>
+        <div class="st-stat-label">Dias de Plano</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="st-bottom">
+    <div class="st-headline">
+      Cansado de se <em>sentir velho</em><br>antes da hora?
+    </div>
+    <div class="st-sub">
+      O Código da Longevidade entrega o protocolo completo — da causa à solução.
+    </div>
+    <div class="st-price-row">
+      <span class="st-was">R$ 97,00</span>
+      <span class="st-now">R$ 19,90</span>
+      <span class="st-badge-sale">80% OFF</span>
+    </div>
+    <button class="st-cta" onclick="window.open('https://pay.cakto.com.br/5a2axev_865748', '_blank')" style="width:100%;cursor:pointer;">QUERO MEU ACESSO AGORA →</button>
+    <div class="st-guarantee">✦ Download imediato · Garantia de 7 dias</div>
+  </div>
+</div>
+
+
+<p class="section-label">Banner Email / YouTube Thumbnail — 16:9</p>
+
+<!-- ════════════════ BANNER HORIZONTAL ════════════════ -->
+<div class="banner-wide">
+
+  <div class="bw-left">
+    <div class="bw-book">
+      <div class="bwb-cat">Longevidade</div>
+      <div class="bwb-title">Código da</div>
+      <div class="bwb-subtitle">Longevidade</div>
+      <div class="bwb-line"></div>
+    </div>
+  </div>
+
+  <div class="bw-center">
+    <div class="bw-pretitle">Protocolo Completo de Saúde</div>
+    <div class="bw-headline">
+      Pare de acordar<br>
+      <em>exausto todo dia.</em>
+    </div>
+    <div class="bw-desc">
+      7 módulos práticos: causa da fadiga, alimentação antiinflamatória, sono reparador, exames e suplementação inteligente — com plano de ação de 90 dias.
+    </div>
+  </div>
+
+  <div class="bw-right">
+    <div class="bw-price-was">De R$ 97,00</div>
+    <div class="bw-price-now">R$ 19,90</div>
+    <div class="bw-price-label">acesso vitalício</div>
+    <div class="bw-cta" onclick="window.open('https://pay.cakto.com.br/5a2axev_865748', '_blank')" style="cursor:pointer;">QUERO MEU ACESSO →</div>
+    <div class="bw-guarantee">Download imediato<br>Garantia de 7 dias</div>
+  </div>
+
+</div>
+
+</body>
+</html>
